@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	authServiceURL = "http://auth-service:8081"
+	authServiceURL = "http://localhost:8081"
 )
 
 type wrappedWriter struct {
