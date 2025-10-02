@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	port = "0.0.0.0:8081"
+	port = ":8081"
 )
 
 func main() {
@@ -30,7 +30,7 @@ func main() {
 
 	envflag.Parse()
 
-	db.InitDB("auth-service/data/auth.db")
+	db.InitDB("./data/auth.db")
 
 	defer db.DB.Close()
 
