@@ -34,6 +34,15 @@ type AuthResponse struct {
 	User      UserResponse `json:"user"`
 }
 
+// NewValidateTokenHandler godoc
+// @Summary Валідація токена
+// @Description Перевіряє дійсність JWT токена
+// @Tags auth
+// @Produce plain
+// @Success 200 {string} string "OK"
+// @Failure 401 {string} string "Invalid token"
+// @Security BearerAuth
+// @Router /auth/validate [get]
 func NewValidateTokenHandler(secretKey string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
@@ -63,6 +72,18 @@ func NewValidateTokenHandler(secretKey string) http.HandlerFunc {
 	}
 }
 
+// NewAuthHandler godoc
+// @Summary Авторизація користувача
+// @Description Приймає логін і пароль, перевіряє користувача та повертає JWT токен
+// @Tags auth
+// @Accept json
+// @Produce json
+// @Param request body AuthRequest true "Дані користувача"
+// @Success 200 {object} AuthResponse
+// @Failure 400 {object} models.ErrorResponse "Некоректний запит"
+// @Failure 401 {object} models.ErrorResponse "Невірні дані"
+// @Failure 500 {object} models.ErrorResponse "Помилка сервера"
+// @Router /api/auth [post]
 func NewAuthHandler(secretKey string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req AuthRequest

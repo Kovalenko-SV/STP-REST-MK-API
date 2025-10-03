@@ -4,7 +4,10 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"strings"
 	"time"
+
+	_ "ksv/rest-mikroservice/auth-service/models"
 )
 
 const (
@@ -22,7 +25,17 @@ func AuthMiddleware() func(http.Handler) http.Handler {
 			start := time.Now()
 
 			publicPaths := map[string]bool{
-				"/api/auth": true,
+				"/api/auth":           true,
+				"/swagger/":           true,
+				"/swagger/index.html": true,
+			}
+
+			for pub := range publicPaths {
+				if strings.HasPrefix(r.URL.Path, pub) {
+					log.Println("Public path, no token required.")
+					next.ServeHTTP(w, r)
+					return
+				}
 			}
 
 			if publicPaths[r.URL.Path] {

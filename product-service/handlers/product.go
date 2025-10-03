@@ -21,6 +21,17 @@ func NewProductHandler(repo *db.ProductRepository) *ProductHandler {
 	return &ProductHandler{repo: repo}
 }
 
+// Create godoc
+// @Summary Створення нового продукту
+// @Description Додає новий продукт у базу даних
+// @Tags product
+// @Accept json
+// @Produce json
+// @Param product body models.Product true "Новий продукт"
+// @Success 201 {object} models.Product
+// @Failure 400 {string} string "Некоректний запит"
+// @Failure 500 {string} string "Помилка сервера"
+// @Router /api/product [post]
 func (h *ProductHandler) Create() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var p models.Product
@@ -39,6 +50,18 @@ func (h *ProductHandler) Create() http.HandlerFunc {
 	}
 }
 
+// Get godoc
+// @Summary Отримання продукту або списку продуктів
+// @Description Якщо передано id — повертає один продукт, інакше список з обмеженням limit
+// @Tags product
+// @Produce json
+// @Param id query string false "ID продукту"
+// @Param limit query int false "Кількість продуктів (за замовчуванням 10)"
+// @Success 200 {object} models.Product
+// @Success 200 {array} models.Product
+// @Failure 404 {string} string "Продукт не знайдено"
+// @Failure 500 {string} string "Помилка сервера"
+// @Router /api/product [get]
 func (h *ProductHandler) Get() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")
@@ -66,6 +89,18 @@ func (h *ProductHandler) Get() http.HandlerFunc {
 	}
 }
 
+// Update godoc
+// @Summary Оновлення продукту
+// @Description Оновлює дані продукту за ID
+// @Tags product
+// @Accept json
+// @Produce json
+// @Param id query string true "ID продукту"
+// @Param product body models.Product true "Оновлені дані продукту"
+// @Success 200 {object} models.SuccessResponse
+// @Failure 400 {string} string "Некоректний запит"
+// @Failure 500 {string} string "Помилка сервера"
+// @Router /api/product [put]
 func (h *ProductHandler) Update() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")
@@ -83,6 +118,15 @@ func (h *ProductHandler) Update() http.HandlerFunc {
 	}
 }
 
+// Delete godoc
+// @Summary Видалення продукту
+// @Description Видаляє продукт за ID
+// @Tags product
+// @Produce json
+// @Param id query string true "ID продукту"
+// @Success 200 {object} models.SuccessResponse
+// @Failure 500 {string} string "Помилка сервера"
+// @Router /api/product [delete]
 func (h *ProductHandler) Delete() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.URL.Query().Get("id")

@@ -1,3 +1,12 @@
+// @title Auth Service API
+// @version 1.0
+// @description API для авторизації користувачів
+// @host localhost:8081
+// @BasePath /
+
+// @securityDefinitions.apikey BearerAuth
+// @in header
+// @name Authorization
 package main
 
 import (
@@ -5,8 +14,13 @@ import (
 	"log"
 	"net/http"
 
+	_ "ksv/rest-mikroservice/auth-service/docs"
+
 	"github.com/ianschenck/envflag"
 	"github.com/joho/godotenv"
+	httpSwagger "github.com/swaggo/http-swagger"
+
+	_ "github.com/swaggo/files"
 
 	"ksv/rest-mikroservice/auth-service/db"
 	"ksv/rest-mikroservice/auth-service/handlers"
@@ -51,6 +65,8 @@ func main() {
 
 func setupRouter(secretKey string) http.Handler {
 	mux := http.NewServeMux()
+
+	mux.Handle("/swagger/", httpSwagger.WrapHandler)
 
 	mux.HandleFunc("POST /api/auth", handlers.NewAuthHandler(secretKey))
 	mux.HandleFunc("GET /auth/validate", handlers.NewValidateTokenHandler(secretKey))

@@ -1,4 +1,4 @@
-package models
+package handlers
 
 import "time"
 
@@ -9,6 +9,15 @@ type User struct {
 	IsAdmin   bool       `db:"is_admin"`
 	CreatedAt time.Time  `db:"created_at"`
 	UpdatedAt *time.Time `db:"updated_at"`
+}
+
+type Product struct {
+	ID        string     `db:"id" json:"id"`
+	Name      string     `db:"name" json:"name"`
+	Price     float64    `db:"price" json:"price"`
+	Quantity  int        `db:"quantity" json:"quantity"`
+	CreatedAt time.Time  `db:"created_at" json:"createdAt"`
+	UpdatedAt *time.Time `db:"updated_at" json:"updatedAt,omitempty"`
 }
 
 type ErrorResponse struct {
